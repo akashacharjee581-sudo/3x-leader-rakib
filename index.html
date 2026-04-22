@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>3X LEADER RAKIB Smart Signal</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; touch-action: none; }
+html, body { height:100%; overflow: hidden; background:#000; }
+
+iframe {
+  position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-index:0;
+}
+
+/* Update Screen Styling */
+#updateScreen {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: #000; color: #ff0000; display: none;
+  align-items: center; justify-content: center;
+  font-size: 50px; font-weight: bold; z-index: 9999;
+  letter-spacing: 5px; text-shadow: 0 0 20px #ff0000;
+}
+
+/* Password Overlay */
+.password-overlay {
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  background:rgba(10, 10, 10, 0.95);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:30; backdrop-filter:blur(15px); border-radius:16px;
+}
+
+.password-form {
+  display:flex; flex-direction:column; align-items:center; gap:15px;
+  padding:25px; background:#0a0a0a; border:2px solid #00ffc8;
+  border-radius:12px; box-shadow:0 0 25px rgba(0,255,200,0.4);
+  width:90%; max-width:280px;
+}
+
+.password-title {
+  font-size:20px; font-weight:bold;
+  background: linear-gradient(90deg, #00eaff, #ff00ff);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; text-align:center; margin-bottom:5px;
+}
+
+.password-input {
+  width:100%; padding:12px; border:1px solid #00ffc8; border-radius:8px;
+  background:#111; color:#fff; font-size:16px; text-align:center; outline:none;
+}
+
+.password-submit {
+  padding:12px; background:#00ffc8; border:none; border-radius:8px;
+  color:#000; font-weight:bold; cursor:pointer; width:100%;
+}
+
+.msg-text {
+  color: #aaa; font-size: 11px; margin-top: 10px; text-align: center;
+}
+
+.msg-link {
+  color: #00ffc8; text-decoration: none; font-weight: bold;
+}
+
+/* Main Prediction Box */
+.prediction-box {
+  position:absolute; top:50px; right:20px;
+  width:220px; background:rgba(0,0,0,0.85);
+  border:2px solid #00ffc8; border-radius:16px;
+  box-shadow:0 0 25px rgba(0,255,200,0.5);
+  backdrop-filter:blur(8px); color:#fff; z-index:20;
+  display:flex; flex-direction:column; padding:12px;
+  cursor: grab; user-select: none;
+}
+
+.prediction-header {
+  text-align: center; border-bottom: 1px solid rgba(0,255,200,0.3);
+  padding-bottom: 8px; margin-bottom: 10px;
+}
+
+.prediction-title {
+  font-size:16px; font-weight:bold;
+  background: linear-gradient(90deg, #00eaff, #ff00ff);
+  -webkit-background-clip: text; color: transparent;
+}
+
+.countdown-section {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(0,255,200,0.1); padding: 8px; border-radius: 8px;
+}
+
+.countdown { font-weight: bold; color: #FFD700; }
+
+.prediction-display {
+  margin: 15px 0; text-align: center;
+}
+
+.prediction {
+  font-size: 26px; font-weight: 800; padding: 10px; border-radius: 8px;
+  margin-bottom: 10px; text-transform: uppercase;
+}
+
+.big { color: #00ff88; background: rgba(0,255,136,0.1); border: 1px solid #00ff88; }
+.small { color: #ff4c4c; background: rgba(255,76,76,0.1); border: 1px solid #ff4c4c; }
+
+.numbers-display { display: flex; justify-content: center; gap: 10px; }
+.num-circle {
+  width: 35px; height: 35px; border-radius: 50%; border: 1px solid #00ffc8;
+  display: flex; align-items: center; justify-content: center; font-weight: bold;
+}
+
+.telegram-btn {
+  background: #0088cc; color: #fff; text-decoration: none;
+  text-align: center; padding: 10px; border-radius: 8px;
+  font-weight: bold; font-size: 14px; margin-top: 5px;
+}
+
+#lockStatus { position: absolute; top: 8px; right: 8px; font-size: 14px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div id="updateScreen">UPDATE</div>
+
+<iframe src="https://18bdwin24.com/register?inviteCode=G3KCFGN&from=web"></iframe>
+
+<div id="predictionBox" class="prediction-box">
+    <div id="passwordOverlay" class="password-overlay">
+      <div class="password-form">
+        <div class="password-title">3X LEADER RAKIB</div>
+        <input type="password" id="p-input" class="password-input" placeholder="পাসওয়ার্ড দিন">
+        <button id="p-btn" class="password-submit">UNLOCK</button>
+        <div class="msg-text">পাসওয়ার্ড এর জন্য এখানে মেসেজ দিন:<br>
+          <a href="https://t.me/RAKIB_KILLAR_420" class="msg-link">@RAKIB_KILLAR_420</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="lockStatus">🔒</div>
+
+    <div class="prediction-header">
+      <div class="prediction-title">3X LEADER RAKIB</div>
+    </div>
+
+    <div class="countdown-section">
+      <span style="font-size: 12px;">Next Period:</span>
+      <span id="timer" class="countdown">--s</span>
+    </div>
+
+    <div class="prediction-display">
+      <div id="res-text" class="prediction big">WAIT...</div>
+      <div class="numbers-display">
+        <div id="n1" class="num-circle">-</div>
+        <div id="n2" class="num-circle">-</div>
+      </div>
+    </div>
+
+    <a href="https://t.me/+zFId_M2uLK8yNzk1" target="_blank" class="telegram-btn">JOIN TELEGRAM</a>
+</div>
+
+<script>
+// ১. কনফিগুরেশন
+const CONFIG = {
+    PASS: "#3X_RAKIB",
+    EXPIRY_DATE: new Date("2026-04-30T23:59:59").getTime(),
+    API_URL: 'https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json'
+};
+
+// ২. এক্সপায়ারি চেক (৩০ তারিখের পর সব বন্ধ)
+function checkExpiry() {
+    const now = new Date().getTime();
+    if (now > CONFIG.EXPIRY_DATE) {
+        document.body.innerHTML = '<div id="updateScreen" style="display:flex;">UPDATE</div>';
+        return true;
+    }
+    return false;
+}
+setInterval(checkExpiry, 5000);
+checkExpiry();
+
+// ৩. ড্র্যাগিং সিস্টেম (স্মুথ মুভমেন্ট)
+const box = document.getElementById('predictionBox');
+let isDragging = false;
+let currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
+
+box.addEventListener("pointerdown", (e) => {
+    if (e.target.closest('.password-form') || e.target.closest('.telegram-btn')) return;
+    initialX = e.clientX - xOffset;
+    initialY = e.clientY - yOffset;
+    isDragging = true;
+    box.style.cursor = "grabbing";
+});
+
+document.addEventListener("pointermove", (e) => {
+    if (isDragging) {
+        e.preventDefault();
+        currentX = e.clientX - initialX;
+        currentY = e.clientY - initialY;
+        xOffset = currentX;
+        yOffset = currentY;
+        box.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+    }
+});
+
+document.addEventListener("pointerup", () => {
+    isDragging = false;
+    box.style.cursor = "grab";
+});
+
+// ৪. পাসওয়ার্ড সিস্টেম
+const pInput = document.getElementById('p-input');
+const pBtn = document.getElementById('p-btn');
+const overlay = document.getElementById('passwordOverlay');
+
+if(sessionStorage.getItem('rakib_unlocked')) {
+    overlay.style.display = 'none';
+    startBot();
+}
+
+pBtn.onclick = () => {
+    if(pInput.value === CONFIG.PASS) {
+        overlay.style.display = 'none';
+        sessionStorage.setItem('rakib_unlocked', 'true');
+        startBot();
+    } else {
+        alert("ভুল পাসওয়ার্ড!");
+    }
+};
+
+// ৫. হ্যাকবট লজিক
+function startBot() {
+    setInterval(async () => {
+        const now = new Date();
+        const sec = now.getSeconds();
+        const remain = 30 - (sec % 30);
+        document.getElementById('timer').innerText = remain + "s";
+
+        if (remain === 29) {
+            updatePrediction();
+        }
+    }, 1000);
+}
+
+function updatePrediction() {
+    const resText = document.getElementById('res-text');
+    const n1 = document.getElementById('n1');
+    const n2 = document.getElementById('n2');
+
+    resText.innerText = "ANALYZING...";
+    
+    setTimeout(() => {
+        const isBig = Math.random() > 0.5;
+        if(isBig) {
+            resText.innerText = "BIG";
+            resText.className = "prediction big";
+            n1.innerText = Math.floor(Math.random() * 5) + 5;
+            n2.innerText = Math.floor(Math.random() * 5) + 5;
+        } else {
+            resText.innerText = "SMALL";
+            resText.className = "prediction small";
+            n1.innerText = Math.floor(Math.random() * 5);
+            n2.innerText = Math.floor(Math.random() * 5);
+        }
+    }, 2000);
+}
+</script>
+</body>
+</html>
