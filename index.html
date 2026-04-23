@@ -1,229 +1,104 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>3X LEADER RAKIB</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-<style>
-* { margin:0; padding:0; box-sizing:border-box; touch-action: none; }
-html, body { height:100%; overflow: hidden; background:#000; }
-iframe { position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-index:0; touch-action: auto; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Countdown</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #58a6ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-/* Expiry Screen */
-#expiryOverlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: black;
-  color: red;
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-  font-size: 50px;
-  font-weight: bold;
-}
+        .container {
+            text-align: center;
+            border: 2px solid #30363d;
+            padding: 30px 50px;
+            border-radius: 20px;
+            background: #161b22;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-/* Password Overlay */
-.password-overlay {
-  position:absolute; top:0; left:0; width:100%; height:100%;
-  background:rgba(10, 10, 10, 0.95);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  z-index:30; backdrop-filter:blur(10px);
-}
+        .loading-text {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
 
-.password-form {
-  display:flex; flex-direction:column; align-items:center; gap:12px;
-  padding:25px; background:#0a0a0a; border:2px solid #00ffc8;
-  border-radius:15px; box-shadow:0 0 25px rgba(0,255,200,0.4); width:90%;
-}
+        #timer {
+            font-size: 70px;
+            font-weight: bold;
+            color: #ffffff;
+            font-family: monospace;
+            background: #0d1117;
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            border: 1px solid #30363d;
+        }
 
-.password-title {
-  font-size:20px; font-weight:bold; color: #00ffc8;
-  text-align:center; margin-bottom:5px;
-}
-
-.password-input {
-  width:100%; padding:12px; border:1px solid #00ffc8; border-radius:8px;
-  background:#111; color:#fff; text-align:center; outline:none;
-}
-
-.password-submit {
-  padding:12px; background:#00ffc8; border:none; border-radius:8px;
-  color:#000; font-weight:bold; cursor:pointer; width:100%;
-}
-
-.pass-hint {
-  color: #aaa; font-size: 11px; margin-top: 10px; text-decoration: none;
-}
-
-/* Prediction Box */
-.prediction-box {
-  position:absolute; top:50px; left:20px;
-  width:230px; background:rgba(0,0,0,0.85);
-  border:2px solid #ff00ff; border-radius:16px;
-  box-shadow:0 0 20px rgba(255,0,255,0.4);
-  color:#fff; z-index:20; padding:15px;
-  cursor:move; touch-action: none;
-}
-
-.prediction-title {
-  font-size:18px; font-weight:bold; text-align:center;
-  background: linear-gradient(90deg, #00eaff, #ff00ff);
-  -webkit-background-clip: text; color: transparent;
-  margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.prediction-display {
-  background: rgba(255,255,255,0.05); padding: 15px;
-  border-radius: 12px; text-align: center; margin-bottom: 10px;
-}
-
-.prediction { font-size:26px; font-weight:bold; margin: 10px 0; }
-.big { color: #00ff88; text-shadow: 0 0 10px #00ff88; }
-.small { color: #ff4c4c; text-shadow: 0 0 10px #ff4c4c; }
-
-.numbers-display { display: flex; justify-content: center; gap: 10px; }
-.number {
-  width: 35px; height: 35px; background: #222;
-  border: 1px solid #00ffc8; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; font-weight: bold;
-}
-
-.telegram-button {
-  display: block; width: 100%; padding: 10px;
-  background: #0088cc; color: #fff; text-decoration: none;
-  text-align: center; border-radius: 8px; font-weight: bold; font-size: 14px;
-}
-
-#countdown { color: #FFD700; font-weight: bold; }
-</style>
+        .sub-text {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #8b949e;
+        }
+    </style>
 </head>
 <body>
 
-  <div id="expiryOverlay">UPDATE</div>
-
-  <iframe src="https://18bdwin24.com/register?inviteCode=G3KCFGN&from=web"></iframe>
-
-  <div id="predictionBox" class="prediction-box">
-    <div id="passwordOverlay" class="password-overlay">
-      <div class="password-form">
-        <div class="password-title">3X LEADER RAKIB</div>
-        <input type="password" id="passwordInput" class="password-input" placeholder="পাসওয়ার্ড দিন">
-        <button id="passwordSubmit" class="password-submit">UNLOCK</button>
-        <a href="https://t.me/RAKIB_KILLAR_420" class="pass-hint">পাসওয়ার্ডের জন্য এখানে চাপ দিন</a>
-        <div id="passwordError" style="color:red; font-size:12px;"></div>
-      </div>
-    </div>
-
-    <div class="prediction-title">3X LEADER RAKIB</div>
-    
-    <div style="font-size: 12px; text-align: center; margin-bottom: 5px;">
-      Next Period: <span id="countdown">--s</span>
-    </div>
-
-    <div class="prediction-display">
-      <div style="font-size:11px; color:#aaa;">AI PREDICTION</div>
-      <div id="prediction" class="prediction">...</div>
-      <div class="numbers-display">
-        <div id="num1" class="number">-</div>
-        <div id="num2" class="number">-</div>
-      </div>
-    </div>
-
-    <a href="https://t.me/+zFId_M2uLK8yNzk1" target="_blank" class="telegram-button">Join Telegram Group</a>
-  </div>
+<div class="container">
+    <div class="loading-text">সিস্টেম আপডেট হচ্ছে...</div>
+    <div id="timer">--:--:--</div>
+    <div class="sub-text" id="status">রক্ষণাবেক্ষণ এর জন্য কিছু সময় বন্ধ আছে
+অনুগ্রহ করে অপেক্ষা করুন 
+ধন্যবাদ </div>
+</div>
 
 <script>
-// ১. এক্সপায়ারি সিস্টেম (৩০-০৪-২০২৬ রাত ১১:৫৯)
-function checkExpiry() {
-    const expiryDate = new Date("2026-04-30T23:59:59").getTime();
-    const now = new Date().getTime();
-    if (now > expiryDate) {
-        document.getElementById('expiryOverlay').style.display = 'flex';
-        document.getElementById('predictionBox').style.display = 'none';
-    }
-}
-setInterval(checkExpiry, 1000);
+    function startTimer() {
+        // আজকের দিনের জন্য রাত ১২:৩৫ (পরের দিনের শুরু) টার্গেট করা হয়েছে
+        const targetTime = new Date();
+        targetTime.setHours(24, 35, 0, 0); 
 
-// ২. পাসওয়ার্ড সিস্টেম
-const PASS = "#3X_RAKIB";
-const submitBtn = document.getElementById('passwordSubmit');
-const passInput = document.getElementById('passwordInput');
-const overlay = document.getElementById('passwordOverlay');
+        const timerDisplay = document.getElementById('timer');
+        const statusDisplay = document.getElementById('status');
 
-submitBtn.onclick = () => {
-    if(passInput.value === PASS) {
-        overlay.style.display = 'none';
-        startPrediction();
-    } else {
-        document.getElementById('passwordError').innerText = "ভুল পাসওয়ার্ড!";
-    }
-};
+        const updateCountdown = setInterval(() => {
+            const now = new Date();
+            const remaining = targetTime - now;
 
-// ৩. স্মুথ মুভমেন্ট (Drag System)
-const box = document.getElementById('predictionBox');
-let isDragging = false;
-let offsetX, offsetY;
-
-box.addEventListener('touchstart', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
-    isDragging = true;
-    offsetX = e.touches[0].clientX - box.offsetLeft;
-    offsetY = e.touches[0].clientY - box.offsetTop;
-});
-
-document.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    let x = e.touches[0].clientX - offsetX;
-    let y = e.touches[0].clientY - offsetY;
-    box.style.left = x + 'px';
-    box.style.top = y + 'px';
-});
-
-document.addEventListener('touchend', () => { isDragging = false; });
-
-// ৪. ১ মিনিট এপিআই এবং প্রেডিকশন
-const API_URL = 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json';
-let lastIssue = "";
-
-async function fetchPrediction() {
-    try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        const currentIssue = data.data.list[0].issueNumber;
-
-        if (currentIssue !== lastIssue) {
-            lastIssue = currentIssue;
-            const isBig = Math.random() > 0.5;
-            const predEl = document.getElementById('prediction');
-            
-            if(isBig) {
-                predEl.innerText = "BIG";
-                predEl.className = "prediction big";
-                document.getElementById('num1').innerText = Math.floor(Math.random() * 5) + 5;
-                document.getElementById('num2').innerText = Math.floor(Math.random() * 5) + 5;
-            } else {
-                predEl.innerText = "SMALL";
-                predEl.className = "prediction small";
-                document.getElementById('num1').innerText = Math.floor(Math.random() * 5);
-                document.getElementById('num2').innerText = Math.floor(Math.random() * 5);
+            if (remaining <= 0) {
+                clearInterval(updateCountdown);
+                timerDisplay.innerHTML = "00:00:00";
+                timerDisplay.style.color = "#238636";
+                statusDisplay.innerHTML = "আপডেট সফলভাবে সম্পন্ন হয়েছে!";
+                document.querySelector('.loading-text').innerHTML = "আপডেট ফিনিশড";
+                return;
             }
-        }
-    } catch (e) { console.log("API Error"); }
-}
 
-function updateTime() {
-    const now = new Date();
-    const remain = 60 - now.getSeconds();
-    document.getElementById('countdown').innerText = remain + "s";
-    if (remain === 59) fetchPrediction();
-}
+            // ঘণ্টা, মিনিট ও সেকেন্ড ক্যালকুলেশন
+            const h = Math.floor((remaining / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((remaining / (1000 * 60)) % 60);
+            const s = Math.floor((remaining / 1000) % 60);
 
-function startPrediction() {
-    setInterval(updateTime, 1000);
-    fetchPrediction();
-}
+            // ফরম্যাট ঠিক রাখা (00:00:00)
+            timerDisplay.innerHTML = 
+                (h < 10 ? "0" + h : h) + ":" + 
+                (m < 10 ? "0" + m : m) + ":" + 
+                (s < 10 ? "0" + s : s);
+
+        }, 1000);
+    }
+
+    startTimer();
 </script>
+
 </body>
 </html>
