@@ -3,102 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Countdown</title>
+    <title>3X RAKIB • VIP TERMINAL</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
-        body {
-            background-color: #0d1117;
-            color: #58a6ff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        /* clean, minimal, focused – background site visible, no animations */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
         }
 
-        .container {
-            text-align: center;
-            border: 2px solid #30363d;
-            padding: 30px 50px;
-            border-radius: 20px;
-            background: #161b22;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #000;
         }
 
-        .loading-text {
-            font-size: 20px;
+        /* background site */
+        #bg-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            opacity: 1;
+            z-index: 0;
+            pointer-events: auto;
+        }
+
+        .interface-layer {
+            position: relative;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .drag-box, #result-popup {
+            pointer-events: auto;
+        }
+
+        .drag-box {
+            position: fixed;
+            background: rgba(10, 5, 20, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 215, 0, 0.6);
+            border-radius: 24px;
+            padding: 18px 14px;
+            width: 240px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 0 1px #ffaa33 inset;
+            color: #fff;
             font-weight: 500;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+            border-top: 2px solid #ffcc00;
+            border-left: 2px solid #ffcc00;
         }
 
-        #timer {
-            font-size: 70px;
-            font-weight: bold;
-            color: #ffffff;
-            font-family: monospace;
-            background: #0d1117;
-            padding: 10px 20px;
-            border-radius: 10px;
-            display: inline-block;
-            border: 1px solid #30363d;
+        #c-panel {
+            top: 50px;
+            right: 20px;
         }
 
-        .sub-text {
-            margin-top: 20px;
+        #c-panel.minimized {
+            width: 65px !important;
+            height: 65px !important;
+            border-radius: 50%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 30% 30%, #ffaa00, #aa00ff);
+            border: 2px solid gold;
+            cursor: pointer;
+            box-shadow: 0 0 20px gold;
+        }
+        #c-panel.minimized *:not(::after) {
+            display: none;
+        }
+        #c-panel.minimized::after {
+            content: "3X";
+            font-size: 24px;
+            font-weight: 900;
+            color: black;
+            text-shadow: 0 0 10px white;
+        }
+
+        .header {
             font-size: 14px;
-            color: #8b949e;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffcc00;
+            border-bottom: 1px solid #ff44ff;
+            padding-bottom: 6px;
+            margin-bottom: 16px;
+            text-shadow: 0 0 5px cyan;
         }
+
+        .res-display {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(145deg, #ffd966, #ffb700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 5px 0;
+        }
+
+        .percent-badge {
+            background: #00000060;
+            color: #0ff;
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 40px;
+            display: inline-block;
+            border: 1px solid #ffcc00;
+        }
+
+        #time-txt {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 5px red;
+            margin: 8px 0;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px 8px;
+            margin-top: 10px;
+            background: #1a0033;
+            border: 1px solid #aa00ff;
+            color: #fff;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 5px black;
+        }
+        .btn:hover { background: #330066; border-color: #ffcc00; }
+
+        input {
+            width: 100%;
+            padding: 14px 12px;
+            margin-bottom: 18px;
+            background: #0a001a;
+            border: 2px solid #ff44ff;
+            border-radius: 60px;
+            color: #ffcc00;
+            font-weight: bold;
+            text-align: center;
+            outline: none;
+            box-shadow: 0 0 10px #ff00aa;
+        }
+
+        .welcome-tag {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 10px gold, 0 0 20px magenta;
+        }
+
+        #result-popup {
+            position: fixed;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 30000;
+            padding: 20px 60px;
+            border-radius: 60px;
+            font-size: 56px;
+            font-weight: 900;
+            display: none;
+            background: rgba(0,0,0,0.8);
+            border: 3px solid gold;
+            box-shadow: 0 0 80px #ff00ff;
+            color: white;
+        }
+
+        #history-box {
+            top: 200px;
+            left: 15px;
+            width: 240px;
+            background: #0f001f;
+            display: none;
+        }
+
+        .log-list {
+            max-height: 180px;
+            overflow-y: auto;
+            border: 1px solid #ff00c8;
+            border-radius: 16px;
+            padding: 8px;
+            background: #00000060;
+        }
+
+        .log-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 10px;
+            border-bottom: 1px dashed #ff44ff;
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .nav-holder { display: flex; justify-content: center; margin-top: 16px; }
+        .nav-btn {
+            background: #00000080;
+            border: 2px solid #ffcc00;
+            color: #ffcc00;
+            padding: 8px 20px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .screen { display: none; }
+        .active { display: block; }
+        
+        /* Expired Screen Styles */
+        #expired-screen {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        #expired-screen h2 { color: #ff4444; margin-bottom: 10px; }
     </style>
 </head>
 <body>
+    <iframe id="bg-frame" src="https://18bdwin24.com/register?inviteCode=G3KCFGN&from=web"></iframe>
+    
+    <div class="interface-layer">
+        <div id="result-popup">WIN</div>
 
-<div class="container">
-    <div class="loading-text">সিস্টেম আপডেট হচ্ছে...</div>
-    <div id="timer">--:--:--</div>
-    <div class="sub-text" id="status">রক্ষণাবেক্ষণ এর জন্য কিছু সময় বন্ধ আছে
-অনুগ্রহ করে অপেক্ষা করুন 
-ধন্যবাদ </div>
-</div>
+        <div id="c-panel" class="drag-box">
+            <div class="header">3X RAKIB • VIP⚡</div>
+            
+            <div id="login-screen" class="screen active">
+                <div class="welcome-tag">🌐 3X•LOGIN SYSTEM• 🌟</div>
+                <input type="text" id="uid" placeholder="USER UID👩‍💻">
+                <input type="password" id="pass" placeholder="USER PASSWORD🔒">
+                <div id="login-status" style="color:#ff0; font-size:11px; text-align:center; margin-bottom:10px;"></div>
+                <button class="btn" onclick="verifyPassword()">▶ SYSTEM ACCESS</button>
+            </div>
 
-<script>
-    function startTimer() {
-        // আজকের দিনের জন্য রাত ১২:৩৫ (পরের দিনের শুরু) টার্গেট করা হয়েছে
-        const targetTime = new Date();
-        targetTime.setHours(24, 35, 0, 0); 
+            <div id="server-screen" class="screen">
+                <button class="btn" onclick="selectServer('1M')">⏱️ 1 MIN WINGO</button>
+                <button class="btn" onclick="selectServer('30S')">⚡ 30 SEC WINGO</button>
+                <button class="btn" style="border-color:#ff4444;" onclick="showScreen('login-screen')">◀ BACK</button>
+            </div>
 
-        const timerDisplay = document.getElementById('timer');
-        const statusDisplay = document.getElementById('status');
+            <div id="engine-ui" class="screen">
+                <div id="period-txt" style="font-size:12px; color:#0ff;">PERIOD: --</div>
+                <div id="prediction-display" class="res-display">3X VIP</div>
+                <div id="accuracy-txt" class="percent-badge">ACC: 99%</div>
+                <div id="time-txt">TIME: --</div>
+                <button class="btn" onclick="toggleHistory()">📜 HISTORY</button>
+                <button class="btn" style="border-color:#ff4444;" onclick="minimizePanel(event)">⛔ HIDE</button>
+            </div>
 
-        const updateCountdown = setInterval(() => {
+            <div id="expired-screen">
+                <h2>⚠️ SESSION EXPIRED</h2>
+                <p style="font-size: 12px; color: #ccc;">সিস্টেমটি আপডেট করার সময় হয়েছে। দয়া করে এডমিনের সাথে যোগাযোগ করুন।</p>
+                <button class="btn" onclick="window.open('https://t.me/+zFId_M2uLK8yNzk1')">UPDATE NOW</button>
+            </div>
+
+            <div class="nav-holder">
+                <div class="nav-btn" onclick="window.open('https://t.me/+zFId_M2uLK8yNzk1')">📡 TG</div>
+            </div>
+        </div>
+
+        <div id="history-box" class="drag-box">
+            <div class="header">🔮 3X HISTORY</div>
+            <div id="history-list" class="log-list"></div>
+            <button class="btn" onclick="toggleHistory()" style="border-color:red;">CLOSE</button>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmUULdPLLfasvS3HbjN5mpkoxCU8q2t4U",
+            authDomain: "shakil-1102d.firebaseapp.com",
+            databaseURL: "https://shakil-1102d-default-rtdb.firebaseio.com",
+            projectId: "shakil-1102d",
+            storageBucket: "shakil-1102d.firebasestorage.app",
+            messagingSenderId: "758362426786",
+            appId: "1:758362426786:web:1a5adb3405296189ec36fb"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let isRunning = false;
+        let apiUrl = '';
+        let currentPrediction = null;
+        let lastPeriodId = '';
+        
+        const signalPatterns = [
+            { text: '🚀 BIG [7,9]', color: '#ff44ff' },
+            { text: '🌀 SMALL [0,4]', color: '#00ffff' },
+            { text: '💥 BIG [5,9]', color: '#8a2be2' },
+            { text: '🌪️ SMALL [0,4]', color: '#ffcc00' }
+        ];
+
+        // --- EXPIRE LOGIC ---
+        function checkExpiry() {
+            const expiryDate = new Date('2026-04-30T23:59:00'); // ৩০ এপ্রিল রাত ১১:৫৯
             const now = new Date();
-            const remaining = targetTime - now;
-
-            if (remaining <= 0) {
-                clearInterval(updateCountdown);
-                timerDisplay.innerHTML = "00:00:00";
-                timerDisplay.style.color = "#238636";
-                statusDisplay.innerHTML = "আপডেট সফলভাবে সম্পন্ন হয়েছে!";
-                document.querySelector('.loading-text').innerHTML = "আপডেট ফিনিশড";
-                return;
+            if (now > expiryDate) {
+                isRunning = false;
+                document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+                document.getElementById('expired-screen').style.display = 'block';
+                return true;
             }
+            return false;
+        }
 
-            // ঘণ্টা, মিনিট ও সেকেন্ড ক্যালকুলেশন
-            const h = Math.floor((remaining / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((remaining / (1000 * 60)) % 60);
-            const s = Math.floor((remaining / 1000) % 60);
+        async function verifyPassword() {
+            if(checkExpiry()) return;
+            const userId = document.getElementById('uid').value;
+            const password = document.getElementById('pass').value;
 
-            // ফরম্যাট ঠিক রাখা (00:00:00)
-            timerDisplay.innerHTML = 
-                (h < 10 ? "0" + h : h) + ":" + 
-                (m < 10 ? "0" + m : m) + ":" + 
-                (s < 10 ? "0" + s : s);
+            if (!userId || !password) { alert("Fill both fields"); return; }
 
-        }, 1000);
-    }
+            try {
+                const snapshot = await database.ref('passwords/' + userId).once('value');
+                if (!snapshot.exists()) { alert("❌ User Not Found"); return; }
+                const data = snapshot.val();
+                if (data.status === "blocked") { alert("🚫 Your ID is Blocked"); return; }
 
-    startTimer();
-</script>
+                if (data.password === password) {
+                    alert("✅ 3X Login Success✔️");
+                    showScreen('server-screen');
+                } else {
+                    alert("❌ Invalid Password🚨");
+                }
+            } catch (err) { alert("Firebase Error"); }
+        }
 
+        function selectServer(serverType) {
+            if(checkExpiry()) return;
+            apiUrl = 'https://draw.ar-lottery01.com/WinGo/WinGo_' + serverType + '/GetHistoryIssuePage.json?pageNo=1&pageSize=50';
+            showScreen('engine-ui');
+            isRunning = true;
+            startEngine();
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function minimizePanel(e) { e.stopPropagation(); document.getElementById('c-panel').classList.toggle('minimized'); }
+
+        document.getElementById('c-panel').addEventListener('click', function(e) {
+            if (this.classList.contains('minimized')) {
+                this.classList.remove('minimized');
+            }
+        });
+
+        function toggleHistory() {
+            let hb = document.getElementById('history-box');
+            hb.style.display = hb.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function startEngine() {
+            setInterval(async () => {
+                if (!isRunning || checkExpiry()) return;
+                const now = new Date();
+                const seconds = now.getSeconds();
+                let timeRemaining = apiUrl.includes('1M') ? 60 - seconds : 30 - (seconds % 30);
+                document.getElementById('time-txt').innerText = '⏳ ' + timeRemaining + 's';
+
+                try {
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+                    if (!data.data || !data.data.list) return;
+                    
+                    const latest = data.data.list[0];
+                    const nextId = (BigInt(latest.issueNumber) + 1n).toString();
+
+                    if (lastPeriodId && lastPeriodId !== latest.issueNumber && currentPrediction) {
+                        const win = (parseInt(latest.number) >= 5 && currentPrediction.text.includes('BIG')) || 
+                                    (parseInt(latest.number) < 5 && currentPrediction.text.includes('SMALL'));
+                        
+                        document.getElementById('history-list').insertAdjacentHTML('afterbegin',
+                            `<div class="log-row"><span>#${latest.issueNumber.slice(-4)}</span>
+                            <span style="color:${win ? '#0f0' : '#f44'}">${win ? '✅WIN' : '❌LOSS'}</span></div>`
+                        );
+                    }
+
+                    if (lastPeriodId !== latest.issueNumber) {
+                        lastPeriodId = latest.issueNumber;
+                        const signal = signalPatterns[Math.floor(Math.random() * signalPatterns.length)];
+                        currentPrediction = signal;
+                        document.getElementById('prediction-display').innerText = signal.text;
+                        document.getElementById('period-txt').innerText = '🌀 PERIOD: ' + nextId.slice(-4);
+                    }
+                } catch (e) {}
+            }, 1000);
+        }
+
+        // Drag Setup
+        function setupDrag(el) {
+            let startX, startY, dragging = false;
+            const start = (e) => {
+                if (e.target.tagName === 'BUTTON') return;
+                dragging = true;
+                const evt = e.type.includes('touch') ? e.touches[0] : e;
+                startX = evt.clientX - el.offsetLeft;
+                startY = evt.clientY - el.offsetTop;
+            };
+            const move = (e) => {
+                if (!dragging) return;
+                const evt = e.type.includes('touch') ? e.touches[0] : e;
+                el.style.left = (evt.clientX - startX) + 'px';
+                el.style.top = (evt.clientY - startY) + 'px';
+            };
+            el.addEventListener('mousedown', start);
+            el.addEventListener('touchstart', start);
+            document.addEventListener('mousemove', move);
+            document.addEventListener('touchmove', move);
+            document.addEventListener('mouseup', () => dragging = false);
+            document.addEventListener('touchend', () => dragging = false);
+        }
+        
+        setupDrag(document.getElementById('c-panel'));
+        setupDrag(document.getElementById('history-box'));
+
+        window.onload = () => {
+            checkExpiry();
+            database.ref('.info/connected').on('value', (snap) => {
+                document.getElementById('login-status').innerText = snap.val() ? '🟢 3X Network Live' : '🔴 Connecting...';
+            });
+        };
+    </script>
 </body>
 </html>
