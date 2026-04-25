@@ -2,448 +2,150 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3X RAKIB • VIP TERMINAL</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>3X LEADER RAKIB</title>
     <style>
-        /* clean, minimal, focused – background site visible, no animations */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
+        :root { --neon-border: #ff00ff; --bg: rgba(13, 13, 13, 0.95); --gold: #ffea00; }
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
+
+        /* গেম এরিয়া */
+        #main-frame { width: 100%; height: 100%; border: none; }
+
+        /* ড্রাগ-এবল ফ্লোটিং বডি */
+        #floating-bot {
+            position: absolute; top: 100px; left: 10px; width: 220px;
+            background: var(--bg); border: 2px solid var(--neon-border);
+            border-radius: 15px; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+            z-index: 9999; touch-action: none;
         }
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: #000;
-        }
+        .handle { padding: 10px; text-align: center; font-size: 13px; font-weight: bold; background: var(--neon-border); color: #fff; border-radius: 12px 12px 0 0; cursor: move; }
+        .content { padding: 12px; text-align: center; color: #fff; }
 
-        /* background site */
-        #bg-frame {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            opacity: 1;
-            z-index: 0;
-            pointer-events: auto;
-        }
+        .input-box { width: 90%; padding: 10px; margin: 8px 0; background: #222; border: 1px solid var(--neon-border); color: #fff; border-radius: 8px; text-align: center; }
+        .btn { background: var(--neon-border); color: #fff; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 5px; }
 
-        .interface-layer {
-            position: relative;
-            z-index: 100;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .drag-box, #result-popup {
-            pointer-events: auto;
-        }
-
-        .drag-box {
-            position: fixed;
-            background: rgba(10, 5, 20, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 215, 0, 0.6);
-            border-radius: 24px;
-            padding: 18px 14px;
-            width: 240px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 0 1px #ffaa33 inset;
-            color: #fff;
-            font-weight: 500;
-            border-top: 2px solid #ffcc00;
-            border-left: 2px solid #ffcc00;
-        }
-
-        #c-panel {
-            top: 50px;
-            right: 20px;
-        }
-
-        #c-panel.minimized {
-            width: 65px !important;
-            height: 65px !important;
-            border-radius: 50%;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle at 30% 30%, #ffaa00, #aa00ff);
-            border: 2px solid gold;
-            cursor: pointer;
-            box-shadow: 0 0 20px gold;
-        }
-        #c-panel.minimized *:not(::after) {
-            display: none;
-        }
-        #c-panel.minimized::after {
-            content: "3X";
-            font-size: 24px;
-            font-weight: 900;
-            color: black;
-            text-shadow: 0 0 10px white;
-        }
-
-        .header {
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #ffcc00;
-            border-bottom: 1px solid #ff44ff;
-            padding-bottom: 6px;
-            margin-bottom: 16px;
-            text-shadow: 0 0 5px cyan;
-        }
-
-        .res-display {
-            font-size: 26px;
-            font-weight: 800;
-            background: linear-gradient(145deg, #ffd966, #ffb700);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin: 5px 0;
-        }
-
-        .percent-badge {
-            background: #00000060;
-            color: #0ff;
-            font-size: 13px;
-            padding: 6px 12px;
-            border-radius: 40px;
-            display: inline-block;
-            border: 1px solid #ffcc00;
-        }
-
-        #time-txt {
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
-            text-shadow: 0 0 5px red;
-            margin: 8px 0;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px 8px;
-            margin-top: 10px;
-            background: #1a0033;
-            border: 1px solid #aa00ff;
-            color: #fff;
-            font-weight: 600;
-            font-size: 12px;
-            border-radius: 40px;
-            cursor: pointer;
-            letter-spacing: 1px;
-            box-shadow: 0 2px 5px black;
-        }
-        .btn:hover { background: #330066; border-color: #ffcc00; }
-
-        input {
-            width: 100%;
-            padding: 14px 12px;
-            margin-bottom: 18px;
-            background: #0a001a;
-            border: 2px solid #ff44ff;
-            border-radius: 60px;
-            color: #ffcc00;
-            font-weight: bold;
-            text-align: center;
-            outline: none;
-            box-shadow: 0 0 10px #ff00aa;
-        }
-
-        .welcome-tag {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: #fff;
-            text-shadow: 0 0 10px gold, 0 0 20px magenta;
-        }
-
-        #result-popup {
-            position: fixed;
-            top: 35%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 30000;
-            padding: 20px 60px;
-            border-radius: 60px;
-            font-size: 56px;
-            font-weight: 900;
-            display: none;
-            background: rgba(0,0,0,0.8);
-            border: 3px solid gold;
-            box-shadow: 0 0 80px #ff00ff;
-            color: white;
-        }
-
-        #history-box {
-            top: 200px;
-            left: 15px;
-            width: 240px;
-            background: #0f001f;
-            display: none;
-        }
-
-        .log-list {
-            max-height: 180px;
-            overflow-y: auto;
-            border: 1px solid #ff00c8;
-            border-radius: 16px;
-            padding: 8px;
-            background: #00000060;
-        }
-
-        .log-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 10px;
-            border-bottom: 1px dashed #ff44ff;
-            color: #fff;
-            font-size: 13px;
-        }
-
-        .nav-holder { display: flex; justify-content: center; margin-top: 16px; }
-        .nav-btn {
-            background: #00000080;
-            border: 2px solid #ffcc00;
-            color: #ffcc00;
-            padding: 8px 20px;
-            border-radius: 60px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .screen { display: none; }
-        .active { display: block; }
+        #signal-view { display: none; }
+        .pred-text { font-size: 32px; font-weight: 900; color: #00ff41; margin: 10px 0; text-shadow: 0 0 10px #00ff41; }
         
-        /* Expired Screen Styles */
-        #expired-screen {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        #expired-screen h2 { color: #ff4444; margin-bottom: 10px; }
+        .tg-btn { display: block; background: #0088cc; color: #fff !important; text-decoration: none; font-size: 12px; padding: 10px; border-radius: 8px; margin-top: 10px; font-weight: bold; }
+        .link-txt { font-size: 11px; color: var(--gold); margin-top: 10px; display: block; text-decoration: none; }
+        .home-btn { font-size: 10px; color: #aaa; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; }
     </style>
 </head>
 <body>
-    <iframe id="bg-frame" src="https://18bdwin24.com/register?inviteCode=G3KCFGN&from=web"></iframe>
-    
-    <div class="interface-layer">
-        <div id="result-popup">WIN</div>
 
-        <div id="c-panel" class="drag-box">
-            <div class="header">3X RAKIB • VIP⚡</div>
+    <iframe id="main-frame" src="https://18bdwin24.com/register?inviteCode=G3KCFGN&from=web"></iframe>
+
+    <div id="floating-bot">
+        <div class="handle" id="handle">3X LEADER RAKIB (Ai)</div>
+        <div class="content">
             
-            <div id="login-screen" class="screen active">
-                <div class="welcome-tag">🌐 3X•LOGIN SYSTEM• 🌟</div>
-                <input type="text" id="uid" placeholder="USER UID👩‍💻">
-                <input type="password" id="pass" placeholder="USER PASSWORD🔒">
-                <div id="login-status" style="color:#ff0; font-size:11px; text-align:center; margin-bottom:10px;"></div>
-                <button class="btn" onclick="verifyPassword()">▶ SYSTEM ACCESS</button>
+            <div id="lock-screen">
+                <input type="text" id="passInput" class="input-box" placeholder="পাসওয়ার্ড দিন">
+                <button class="btn" onclick="unlock()">OPEN HACK</button>
+                <a href="https://t.me/RAKIB_KILLAR_420" target="_blank" class="link-txt">পাসওয়ার্ড নিতে মেসেজ করুন</a>
+                <a href="https://t.me/+zFId_M2uLK8yNzk1" target="_blank" class="tg-btn">টেলিগ্রাম চ্যানেল জয়েন ✅</a>
             </div>
 
-            <div id="server-screen" class="screen">
-                <button class="btn" onclick="selectServer('1M')">⏱️ 1 MIN WINGO</button>
-                <button class="btn" onclick="selectServer('30S')">⚡ 30 SEC WINGO</button>
-                <button class="btn" style="border-color:#ff4444;" onclick="showScreen('login-screen')">◀ BACK</button>
+            <div id="signal-view">
+                <div id="mode-select">
+                    <button class="btn" onclick="start('30S')">Win Go 30s 💥</button>
+                    <button class="btn" onclick="start('1M')">Win Go 1m 💣</button>
+                </div>
+                <div id="live-signal" style="display:none;">
+                    <div style="font-size: 11px;">PERIOD: <span id="pID" style="color:var(--gold)">--</span></div>
+                    <div id="pRes" class="pred-text">WAIT</div>
+                    <div id="pColor" style="font-size: 12px;">COLOR: --</div>
+                    <div id="pStatus" style="font-size: 12px; margin-top:5px;">STATUS: --</div>
+                    <div class="home-btn" onclick="location.reload()">↺ BACK TO MODES</div>
+                </div>
+                <div class="home-btn" onclick="document.getElementById('main-frame').src='https://18bdwin24.com'">GO TO HOME</div>
             </div>
-
-            <div id="engine-ui" class="screen">
-                <div id="period-txt" style="font-size:12px; color:#0ff;">PERIOD: --</div>
-                <div id="prediction-display" class="res-display">3X VIP</div>
-                <div id="accuracy-txt" class="percent-badge">ACC: 99%</div>
-                <div id="time-txt">TIME: --</div>
-                <button class="btn" onclick="toggleHistory()">📜 HISTORY</button>
-                <button class="btn" style="border-color:#ff4444;" onclick="minimizePanel(event)">⛔ HIDE</button>
-            </div>
-
-            <div id="expired-screen">
-                <h2>⚠️ SESSION EXPIRED</h2>
-                <p style="font-size: 12px; color: #ccc;">সিস্টেমটি আপডেট করার সময় হয়েছে। দয়া করে এডমিনের সাথে যোগাযোগ করুন।</p>
-                <button class="btn" onclick="window.open('https://t.me/+zFId_M2uLK8yNzk1')">UPDATE NOW</button>
-            </div>
-
-            <div class="nav-holder">
-                <div class="nav-btn" onclick="window.open('https://t.me/+zFId_M2uLK8yNzk1')">📡 TG</div>
-            </div>
-        </div>
-
-        <div id="history-box" class="drag-box">
-            <div class="header">🔮 3X HISTORY</div>
-            <div id="history-list" class="log-list"></div>
-            <button class="btn" onclick="toggleHistory()" style="border-color:red;">CLOSE</button>
         </div>
     </div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBmUULdPLLfasvS3HbjN5mpkoxCU8q2t4U",
-            authDomain: "shakil-1102d.firebaseapp.com",
-            databaseURL: "https://shakil-1102d-default-rtdb.firebaseio.com",
-            projectId: "shakil-1102d",
-            storageBucket: "shakil-1102d.firebasestorage.app",
-            messagingSenderId: "758362426786",
-            appId: "1:758362426786:web:1a5adb3405296189ec36fb"
+<script>
+    // মেয়াদ চেক (২ মে সকাল ১১টা)
+    const expireAt = new Date("2026-05-02T11:00:00").getTime();
+    if (new Date().getTime() > expireAt) {
+        document.body.innerHTML = "<div style='color:red; background:#000; height:100vh; display:flex; justify-content:center; align-items:center; text-align:center;'><h1>ACCESS EXPIRED!<br>Contact Admin</h1></div>";
+        window.stop();
+    }
+
+    const PASS = "#3X_RAKIB2.0";
+    let activeApi = ""; let lastP = "", curBS = "";
+
+    // ড্রাগিং সিস্টেম ঠিক করা হয়েছে
+    const bot = document.getElementById("floating-bot");
+    const handle = document.getElementById("handle");
+    let offsetX, offsetY;
+
+    handle.addEventListener('mousedown', (e) => {
+        offsetX = e.clientX - bot.offsetLeft;
+        offsetY = e.clientY - bot.offsetTop;
+        document.onmousemove = (e) => {
+            bot.style.left = (e.clientX - offsetX) + "px";
+            bot.style.top = (e.clientY - offsetY) + "px";
         };
-        
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+    });
 
-        let isRunning = false;
-        let apiUrl = '';
-        let currentPrediction = null;
-        let lastPeriodId = '';
-        
-        const signalPatterns = [
-            { text: '🚀 BIG [7,9]', color: '#ff44ff' },
-            { text: '🌀 SMALL [0,4]', color: '#00ffff' },
-            { text: '💥 BIG [5,9]', color: '#8a2be2' },
-            { text: '🌪️ SMALL [0,4]', color: '#ffcc00' }
-        ];
+    handle.addEventListener('touchstart', (e) => {
+        offsetX = e.touches[0].clientX - bot.offsetLeft;
+        offsetY = e.touches[0].clientY - bot.offsetTop;
+        document.ontouchmove = (e) => {
+            bot.style.left = (e.touches[0].clientX - offsetX) + "px";
+            bot.style.top = (e.touches[0].clientY - offsetY) + "px";
+        };
+    });
 
-        // --- EXPIRE LOGIC ---
-        function checkExpiry() {
-            const expiryDate = new Date('2026-04-30T23:59:00'); // ৩০ এপ্রিল রাত ১১:৫৯
-            const now = new Date();
-            if (now > expiryDate) {
-                isRunning = false;
-                document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-                document.getElementById('expired-screen').style.display = 'block';
-                return true;
-            }
-            return false;
+    document.onmouseup = document.ontouchend = () => { document.onmousemove = null; document.ontouchmove = null; };
+
+    // আনলক ফাংশন ফিক্সড
+    function unlock() {
+        const input = document.getElementById('passInput').value;
+        if(input === PASS) {
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('signal-view').style.display = 'block';
+        } else {
+            alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
         }
+    }
 
-        async function verifyPassword() {
-            if(checkExpiry()) return;
-            const userId = document.getElementById('uid').value;
-            const password = document.getElementById('pass').value;
+    function start(mode) {
+        document.getElementById('mode-select').style.display = 'none';
+        document.getElementById('live-signal').style.display = 'block';
+        activeApi = (mode === '30S') 
+            ? 'https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?pageSize=30'
+            : 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=30';
+        fetchSignal(); setInterval(fetchSignal, 3000);
+    }
 
-            if (!userId || !password) { alert("Fill both fields"); return; }
+    async function fetchSignal() {
+        try {
+            const r = await fetch(activeApi);
+            const d = await r.json();
+            const latest = d.data.list[0];
 
-            try {
-                const snapshot = await database.ref('passwords/' + userId).once('value');
-                if (!snapshot.exists()) { alert("❌ User Not Found"); return; }
-                const data = snapshot.val();
-                if (data.status === "blocked") { alert("🚫 Your ID is Blocked"); return; }
+            if(lastP !== latest.issueNumber) {
+                const hist = d.data.list.slice(0, 10);
+                let bigCount = hist.filter(x => parseInt(x.number) >= 5).length;
+                let nextBS = (bigCount >= 5) ? "SMALL" : "BIG";
+                let nextC = (nextBS === "BIG") ? "GREEN" : "RED";
 
-                if (data.password === password) {
-                    alert("✅ 3X Login Success✔️");
-                    showScreen('server-screen');
-                } else {
-                    alert("❌ Invalid Password🚨");
+                if(lastP) {
+                    const realBS = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
+                    const win = (curBS === realBS);
+                    document.getElementById('pStatus').innerHTML = `STATUS: <span style="color:${win?'#00ff41':'#ff003c'}">${win?'WIN 🐯':'LOSS 🖤'}</span>`;
                 }
-            } catch (err) { alert("Firebase Error"); }
-        }
-
-        function selectServer(serverType) {
-            if(checkExpiry()) return;
-            apiUrl = 'https://draw.ar-lottery01.com/WinGo/WinGo_' + serverType + '/GetHistoryIssuePage.json?pageNo=1&pageSize=50';
-            showScreen('engine-ui');
-            isRunning = true;
-            startEngine();
-        }
-
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-        }
-
-        function minimizePanel(e) { e.stopPropagation(); document.getElementById('c-panel').classList.toggle('minimized'); }
-
-        document.getElementById('c-panel').addEventListener('click', function(e) {
-            if (this.classList.contains('minimized')) {
-                this.classList.remove('minimized');
+                lastP = latest.issueNumber; curBS = nextBS;
+                document.getElementById('pID').innerText = (BigInt(latest.issueNumber) + 1n).toString();
+                document.getElementById('pRes').innerText = curBS;
+                document.getElementById('pRes').style.color = (curBS === "BIG") ? "var(--gold)" : "#00ff41";
+                document.getElementById('pColor').innerHTML = `COLOR: <span style="color:${nextC==='RED'?'#ff003c':'#00ff41'}">${nextC}</span>`;
             }
-        });
-
-        function toggleHistory() {
-            let hb = document.getElementById('history-box');
-            hb.style.display = hb.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function startEngine() {
-            setInterval(async () => {
-                if (!isRunning || checkExpiry()) return;
-                const now = new Date();
-                const seconds = now.getSeconds();
-                let timeRemaining = apiUrl.includes('1M') ? 60 - seconds : 30 - (seconds % 30);
-                document.getElementById('time-txt').innerText = '⏳ ' + timeRemaining + 's';
-
-                try {
-                    const response = await fetch(apiUrl);
-                    const data = await response.json();
-                    if (!data.data || !data.data.list) return;
-                    
-                    const latest = data.data.list[0];
-                    const nextId = (BigInt(latest.issueNumber) + 1n).toString();
-
-                    if (lastPeriodId && lastPeriodId !== latest.issueNumber && currentPrediction) {
-                        const win = (parseInt(latest.number) >= 5 && currentPrediction.text.includes('BIG')) || 
-                                    (parseInt(latest.number) < 5 && currentPrediction.text.includes('SMALL'));
-                        
-                        document.getElementById('history-list').insertAdjacentHTML('afterbegin',
-                            `<div class="log-row"><span>#${latest.issueNumber.slice(-4)}</span>
-                            <span style="color:${win ? '#0f0' : '#f44'}">${win ? '✅WIN' : '❌LOSS'}</span></div>`
-                        );
-                    }
-
-                    if (lastPeriodId !== latest.issueNumber) {
-                        lastPeriodId = latest.issueNumber;
-                        const signal = signalPatterns[Math.floor(Math.random() * signalPatterns.length)];
-                        currentPrediction = signal;
-                        document.getElementById('prediction-display').innerText = signal.text;
-                        document.getElementById('period-txt').innerText = '🌀 PERIOD: ' + nextId.slice(-4);
-                    }
-                } catch (e) {}
-            }, 1000);
-        }
-
-        // Drag Setup
-        function setupDrag(el) {
-            let startX, startY, dragging = false;
-            const start = (e) => {
-                if (e.target.tagName === 'BUTTON') return;
-                dragging = true;
-                const evt = e.type.includes('touch') ? e.touches[0] : e;
-                startX = evt.clientX - el.offsetLeft;
-                startY = evt.clientY - el.offsetTop;
-            };
-            const move = (e) => {
-                if (!dragging) return;
-                const evt = e.type.includes('touch') ? e.touches[0] : e;
-                el.style.left = (evt.clientX - startX) + 'px';
-                el.style.top = (evt.clientY - startY) + 'px';
-            };
-            el.addEventListener('mousedown', start);
-            el.addEventListener('touchstart', start);
-            document.addEventListener('mousemove', move);
-            document.addEventListener('touchmove', move);
-            document.addEventListener('mouseup', () => dragging = false);
-            document.addEventListener('touchend', () => dragging = false);
-        }
-        
-        setupDrag(document.getElementById('c-panel'));
-        setupDrag(document.getElementById('history-box'));
-
-        window.onload = () => {
-            checkExpiry();
-            database.ref('.info/connected').on('value', (snap) => {
-                document.getElementById('login-status').innerText = snap.val() ? '🟢 3X Network Live' : '🔴 Connecting...';
-            });
-        };
-    </script>
+        } catch(e) {}
+    }
+</script>
 </body>
 </html>
