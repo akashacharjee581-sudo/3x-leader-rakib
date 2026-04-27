@@ -73,10 +73,11 @@
         window.stop();
     }
 
-    const PASS = "#3X_RAKIB2.0";
+    // নতুন পাসওয়ার্ড সেট করা হয়েছে
+    const PASS = "3XRAKIB2026"; 
     let activeApi = ""; let lastP = "", curBS = "";
 
-    // ড্রাগিং সিস্টেম ঠিক করা হয়েছে
+    // ড্রাগিং সিস্টেম
     const bot = document.getElementById("floating-bot");
     const handle = document.getElementById("handle");
     let offsetX, offsetY;
@@ -101,7 +102,7 @@
 
     document.onmouseup = document.ontouchend = () => { document.onmousemove = null; document.ontouchmove = null; };
 
-    // আনলক ফাংশন ফিক্সড
+    // আনলক ফাংশন
     function unlock() {
         const input = document.getElementById('passInput').value;
         if(input === PASS) {
