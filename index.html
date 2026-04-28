@@ -3,147 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>3X LEADER RAKIB</title>
+    <title>3X LEADER RAKIB V2 - SUPREME</title>
     <style>
-        :root { --neon-border: #ff00ff; --bg: rgba(13, 13, 13, 0.95); --gold: #ffea00; }
-        body, html { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
-
-        /* গেম এরিয়া */
+        :root { --neon: #00ffcc; --bg: rgba(5, 5, 5, 0.98); --gold: #ffea00; }
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; font-family: 'Arial', sans-serif; }
         #main-frame { width: 100%; height: 100%; border: none; }
 
-        /* ড্রাগ-এবল ফ্লোটিং বডি */
-        #floating-bot {
-            position: absolute; top: 100px; left: 10px; width: 220px;
-            background: var(--bg); border: 2px solid var(--neon-border);
-            border-radius: 15px; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
-            z-index: 9999; touch-action: none;
+        #diamond-bot {
+            position: absolute; top: 120px; left: 20px; width: 230px;
+            background: var(--bg); border: 2px solid var(--neon);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.6);
+            z-index: 9999; touch-action: none; border-radius: 12px;
         }
 
-        .handle { padding: 10px; text-align: center; font-size: 13px; font-weight: bold; background: var(--neon-border); color: #fff; border-radius: 12px 12px 0 0; cursor: move; }
-        .content { padding: 12px; text-align: center; color: #fff; }
+        #mini-btn {
+            position: absolute; top: 120px; left: 20px; width: 60px; height: 60px;
+            background: var(--neon); border-radius: 50%; display: none;
+            z-index: 10000; cursor: pointer; box-shadow: 0 0 20px var(--neon);
+            justify-content: center; align-items: center; font-size: 24px; border: 2px solid #fff;
+        }
 
-        .input-box { width: 90%; padding: 10px; margin: 8px 0; background: #222; border: 1px solid var(--neon-border); color: #fff; border-radius: 8px; text-align: center; }
-        .btn { background: var(--neon-border); color: #fff; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 5px; }
+        .handle { 
+            padding: 12px; text-align: center; font-size: 13px; font-weight: bold; 
+            background: linear-gradient(90deg, #000, #004444, #000); 
+            color: var(--neon); cursor: move; text-transform: uppercase; 
+            border-bottom: 1px solid var(--neon); border-radius: 10px 10px 0 0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
 
-        #signal-view { display: none; }
-        .pred-text { font-size: 32px; font-weight: 900; color: #00ff41; margin: 10px 0; text-shadow: 0 0 10px #00ff41; }
+        .min-txt { cursor: pointer; background: #ff0055; color: white; padding: 2px 8px; border-radius: 5px; font-size: 10px; }
+        .content { padding: 15px; text-align: center; color: #fff; }
+        .input-box { width: 90%; padding: 10px; margin-bottom: 12px; background: #111; border: 1px solid var(--neon); color: #fff; text-align: center; border-radius: 8px; }
+        .btn-main { background: var(--neon); color: #000; border: none; padding: 10px; cursor: pointer; font-weight: bold; width: 100%; border-radius: 8px; text-transform: uppercase; }
         
-        .tg-btn { display: block; background: #0088cc; color: #fff !important; text-decoration: none; font-size: 12px; padding: 10px; border-radius: 8px; margin-top: 10px; font-weight: bold; }
-        .link-txt { font-size: 11px; color: var(--gold); margin-top: 10px; display: block; text-decoration: none; }
-        .home-btn { font-size: 10px; color: #aaa; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; }
+        #signal-view { display: none; }
+        .pred-box { font-size: 38px; font-weight: 900; margin: 10px 0; text-shadow: 0 0 20px var(--neon); letter-spacing: 2px; }
+        
+        .tg-join { display: block; background: #0088cc; color: #fff !important; text-decoration: none; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; font-weight: bold; }
+        .pass-contact { display: block; color: var(--neon); font-size: 11px; margin: 8px 0; text-decoration: none; border-bottom: 1px solid; width: fit-content; margin: auto; }
+        .login-btn { color: var(--gold); font-size: 11px; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <iframe id="main-frame" src="https://18bdwin24.com/register?inviteCode=G3KCFGN&from=web"></iframe>
+    <iframe id="main-frame" src="https://dkwin19.com/#/register?invitationCode=47516100858"></iframe>
 
-    <div id="floating-bot">
-        <div class="handle" id="handle">3X LEADER RAKIB (Ai)</div>
+    <div id="mini-btn" onclick="maximize()">💬</div>
+
+    <div id="diamond-bot">
+        <div class="handle" id="handle">
+            <span>RAKIB AI SUPREME</span>
+            <span class="min-txt" onclick="minimize()">MIN</span>
+        </div>
         <div class="content">
-            
             <div id="lock-screen">
                 <input type="text" id="passInput" class="input-box" placeholder="পাসওয়ার্ড দিন">
-                <button class="btn" onclick="unlock()">OPEN HACK</button>
-                <a href="https://t.me/RAKIB_KILLAR_420" target="_blank" class="link-txt">পাসওয়ার্ড নিতে মেসেজ করুন</a>
-                <a href="https://t.me/+zFId_M2uLK8yNzk1" target="_blank" class="tg-btn">টেলিগ্রাম চ্যানেল জয়েন ✅</a>
+                <button class="btn-main" onclick="unlock()">ACCESS GRANTED</button>
+                <a href="https://t.me/RAKIB_KILLAR_420" target="_blank" class="pass-contact">পাসওয়ার্ড নিতে মেসেজ</a>
+                <a href="https://t.me/+zFId_M2uLK8yNzk1" target="_blank" class="tg-join">টেলিগ্রাম জয়েন ✅</a>
             </div>
 
             <div id="signal-view">
                 <div id="mode-select">
-                    <button class="btn" onclick="start('30S')">Win Go 30s 💥</button>
-                    <button class="btn" onclick="start('1M')">Win Go 1m 💣</button>
+                    <button class="btn-main" style="margin-bottom: 8px;" onclick="start('30S')">Win Go 30s 💥</button>
+                    <button class="btn-main" onclick="start('1M')">Win Go 1m 💣</button>
                 </div>
-                <div id="live-signal" style="display:none;">
-                    <div style="font-size: 11px;">PERIOD: <span id="pID" style="color:var(--gold)">--</span></div>
-                    <div id="pRes" class="pred-text">WAIT</div>
-                    <div id="pColor" style="font-size: 12px;">COLOR: --</div>
-                    <div id="pStatus" style="font-size: 12px; margin-top:5px;">STATUS: --</div>
-                    <div class="home-btn" onclick="location.reload()">↺ BACK TO MODES</div>
+                <div id="live-panel" style="display:none;">
+                    <div style="font-size: 10px; color: var(--neon); font-weight:bold;">NEXT PERIOD: <span id="pID" style="color:#fff;">--</span></div>
+                    <div id="pRes" class="pred-box">ANALYZING</div>
+                    <div id="pColor" style="font-size: 12px; font-weight:bold;">COLOR: --</div>
+                    <div id="pStatus" style="font-size: 13px; margin-top: 8px; font-weight: 900;">--</div>
+                    <button class="btn-main" style="margin-top: 10px; font-size: 9px; height: 25px;" onclick="location.reload()">BACK MENU</button>
                 </div>
-                <div class="home-btn" onclick="document.getElementById('main-frame').src='https://18bdwin24.com'">GO TO HOME</div>
+                <div class="login-btn" onclick="document.getElementById('main-frame').src='https://dkwin.xyz'">GO TO LOGIN</div>
+                <a href="https://t.me/+zFId_M2uLK8yNzk1" target="_blank" class="tg-join" style="margin-top:10px; background:#333;">CHANNEL</a>
             </div>
         </div>
     </div>
 
 <script>
-    // মেয়াদ চেক (২ মে সকাল ১১টা)
-    const expireAt = new Date("2026-05-02T11:00:00").getTime();
-    if (new Date().getTime() > expireAt) {
-        document.body.innerHTML = "<div style='color:red; background:#000; height:100vh; display:flex; justify-content:center; align-items:center; text-align:center;'><h1>ACCESS EXPIRED!<br>Contact Admin</h1></div>";
-        window.stop();
+    const PASS = "3XRAKIB2026";
+    let api = "", lastP = "", curBS = "", stepCount = 0;
+    const bot = document.getElementById("diamond-bot");
+    const mini = document.getElementById("mini-btn");
+
+    function makeDraggable(el, handle) {
+        let ox = 0, oy = 0;
+        const move = (e) => {
+            let cx = e.touches ? e.touches[0].clientX : e.clientX;
+            let cy = e.touches ? e.touches[0].clientY : e.clientY;
+            el.style.left = (cx - ox) + "px"; el.style.top = (cy - oy) + "px";
+        };
+        handle.addEventListener('mousedown', (e) => {
+            ox = e.clientX - el.offsetLeft; oy = e.clientY - el.offsetTop;
+            document.addEventListener('mousemove', move);
+        });
+        handle.addEventListener('touchstart', (e) => {
+            ox = e.touches[0].clientX - el.offsetLeft; oy = e.touches[0].clientY - el.offsetTop;
+            document.addEventListener('touchmove', move);
+        });
+        document.addEventListener('mouseup', () => document.removeEventListener('mousemove', move));
+        document.addEventListener('touchend', () => document.removeEventListener('touchmove', move));
     }
 
-    // নতুন পাসওয়ার্ড সেট করা হয়েছে
-    const PASS = "3XRAKIB2026"; 
-    let activeApi = ""; let lastP = "", curBS = "";
+    makeDraggable(bot, document.getElementById("handle"));
+    makeDraggable(mini, mini);
 
-    // ড্রাগিং সিস্টেম
-    const bot = document.getElementById("floating-bot");
-    const handle = document.getElementById("handle");
-    let offsetX, offsetY;
+    function minimize() { bot.style.display = 'none'; mini.style.display = 'flex'; mini.style.left = bot.style.left; mini.style.top = bot.style.top; }
+    function maximize() { bot.style.display = 'block'; mini.style.display = 'none'; bot.style.left = mini.style.left; bot.style.top = mini.style.top; }
 
-    handle.addEventListener('mousedown', (e) => {
-        offsetX = e.clientX - bot.offsetLeft;
-        offsetY = e.clientY - bot.offsetTop;
-        document.onmousemove = (e) => {
-            bot.style.left = (e.clientX - offsetX) + "px";
-            bot.style.top = (e.clientY - offsetY) + "px";
-        };
-    });
-
-    handle.addEventListener('touchstart', (e) => {
-        offsetX = e.touches[0].clientX - bot.offsetLeft;
-        offsetY = e.touches[0].clientY - bot.offsetTop;
-        document.ontouchmove = (e) => {
-            bot.style.left = (e.touches[0].clientX - offsetX) + "px";
-            bot.style.top = (e.touches[0].clientY - offsetY) + "px";
-        };
-    });
-
-    document.onmouseup = document.ontouchend = () => { document.onmousemove = null; document.ontouchmove = null; };
-
-    // আনলক ফাংশন
     function unlock() {
-        const input = document.getElementById('passInput').value;
-        if(input === PASS) {
+        if(document.getElementById('passInput').value === PASS) {
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('signal-view').style.display = 'block';
-        } else {
-            alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
-        }
+        } else { alert("WRONG PASSWORD!"); }
     }
 
     function start(mode) {
         document.getElementById('mode-select').style.display = 'none';
-        document.getElementById('live-signal').style.display = 'block';
-        activeApi = (mode === '30S') 
-            ? 'https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?pageSize=30'
-            : 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=30';
-        fetchSignal(); setInterval(fetchSignal, 3000);
+        document.getElementById('live-panel').style.display = 'block';
+        api = (mode === '30S') ? 'https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?pageSize=30' : 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=30';
+        fetchData(); setInterval(fetchData, 2500);
     }
 
-    async function fetchSignal() {
+    async function fetchData() {
         try {
-            const r = await fetch(activeApi);
-            const d = await r.json();
-            const latest = d.data.list[0];
-
+            const r = await fetch(api); const d = await r.json(); const latest = d.data.list[0];
             if(lastP !== latest.issueNumber) {
-                const hist = d.data.list.slice(0, 10);
-                let bigCount = hist.filter(x => parseInt(x.number) >= 5).length;
-                let nextBS = (bigCount >= 5) ? "SMALL" : "BIG";
-                let nextC = (nextBS === "BIG") ? "GREEN" : "RED";
-
+                const list = d.data.list.slice(0, 15);
+                let realBS = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
+                
+                // ১/২ স্টেপ রিকভারি লজিক
                 if(lastP) {
-                    const realBS = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
-                    const win = (curBS === realBS);
-                    document.getElementById('pStatus').innerHTML = `STATUS: <span style="color:${win?'#00ff41':'#ff003c'}">${win?'WIN 🐯':'LOSS 🖤'}</span>`;
+                    if(curBS === realBS) {
+                        document.getElementById('pStatus').innerHTML = `STATUS: <span style="color:#00ff41">WIN 🐯 (S${stepCount+1})</span>`;
+                        stepCount = 0; 
+                    } else {
+                        stepCount++;
+                        document.getElementById('pStatus').innerHTML = `STATUS: <span style="color:#ff003c">LOSS 🖤 (Next Step)</span>`;
+                    }
                 }
+
+                // এডভান্সড অ্যালগরিদম (Trend Analysis)
+                let bigCount = list.filter(x => parseInt(x.number) >= 5).length;
+                let nextBS = (bigCount > 7) ? "SMALL" : (bigCount < 7) ? "BIG" : (parseInt(latest.number) >= 5 ? "SMALL" : "BIG");
+                
+                // মার্টিঙ্গেল প্রোটেকশন
+                if(stepCount > 0) { nextBS = (curBS === "BIG") ? "SMALL" : "BIG"; }
+
                 lastP = latest.issueNumber; curBS = nextBS;
+                let nextColor = (curBS === "BIG") ? "GREEN" : "RED";
+
                 document.getElementById('pID').innerText = (BigInt(latest.issueNumber) + 1n).toString();
                 document.getElementById('pRes').innerText = curBS;
-                document.getElementById('pRes').style.color = (curBS === "BIG") ? "var(--gold)" : "#00ff41";
-                document.getElementById('pColor').innerHTML = `COLOR: <span style="color:${nextC==='RED'?'#ff003c':'#00ff41'}">${nextC}</span>`;
+                document.getElementById('pRes').style.color = (curBS === "BIG") ? "#ffea00" : "#00ffcc";
+                document.getElementById('pColor').innerHTML = `COLOR: <span style="color:${nextColor==='RED'?'#ff003c':'#00ff41'}">${nextColor}</span>`;
             }
         } catch(e) {}
     }
